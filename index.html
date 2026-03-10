@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Live Streaming</title>
+
+<script src="https://unpkg.com/zego-express-engine-webrtc"></script>
+
+</head>
+
+<body>
+
+<h2>Live Streaming</h2>
+
+<video id="local-video" autoplay playsinline style="width:100%"></video>
+
+<button onclick="startLive()">Start Live</button>
+
+<script>
+
+const appID = YOUR_APP_ID;
+const server = "wss://webliveroom.zego.im/ws";
+
+const zg = new ZegoExpressEngine(appID, server);
+
+const roomID = "live_room_1";
+const userID = "streamer_" + Math.floor(Math.random()*10000);
+
+async function startLive(){
+
+await zg.loginRoom(roomID,{userID:userID,userName:userID});
+
+const stream = await zg.createStream();
+
+document.getElementById("local-video").srcObject = stream;
+
+zg.startPublishingStream("stream_1", stream);
+
+}
+
+</script>
+
+</body>
+</html>
